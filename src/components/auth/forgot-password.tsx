@@ -1,21 +1,26 @@
-import { getViewURL, validateEmailAddress } from "@better-auth-ui/core"
+import { getViewURL, validateEmailAddress } from '@better-auth-ui/core'
 import {
   useAuth,
   useFetchOptions,
-  useRequestPasswordReset
-} from "@better-auth-ui/react"
+  useRequestPasswordReset,
+} from '@better-auth-ui/react'
 
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card.tsx"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '#/components/ui/card.tsx'
 import {
   Field,
   FieldDescription,
   FieldGroup,
-  FieldLabel
-} from "#/components/ui/field.tsx"
-import { Input } from "#/components/ui/input.tsx"
-import { cn } from "cn"
-import { isAuthFormFieldInvalid, useAuthForm } from "./auth-form"
-import { RESET_LINK_SENT_STORAGE_KEY } from "./reset-link-sent"
+  FieldLabel,
+} from '#/components/ui/field.tsx'
+import { Input } from '#/components/ui/input.tsx'
+import { cn } from 'cn'
+import { isAuthFormFieldInvalid, useAuthForm } from './auth-form'
+import { RESET_LINK_SENT_STORAGE_KEY } from './reset-link-sent'
 
 export type ForgotPasswordProps = {
   className?: string
@@ -41,7 +46,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
     navigate,
     plugins,
     viewPaths,
-    Link
+    Link,
   } = useAuth()
 
   const { fetchOptions, resetFetchOptions } = useFetchOptions()
@@ -54,29 +59,29 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
       onSuccess: (_data, { email }) => {
         sessionStorage.setItem(RESET_LINK_SENT_STORAGE_KEY, email)
         navigate({ to: `${basePaths.auth}/${viewPaths.auth.resetLinkSent}` })
-      }
+      },
     })
 
   const form = useAuthForm({
-    defaultValues: { email: "" },
+    defaultValues: { email: '' },
     onSubmit: async ({ value }) =>
       await requestPasswordReset({
         email: value.email,
         redirectTo: getViewURL(
           baseURL,
           basePaths.auth,
-          viewPaths.auth.resetPassword
+          viewPaths.auth.resetPassword,
         ),
-        fetchOptions
-      })
+        fetchOptions,
+      }),
   })
 
   const Captcha = plugins.find(
-    (plugin) => plugin.captchaComponent
+    (plugin) => plugin.captchaComponent,
   )?.captchaComponent
 
   return (
-    <Card className={cn("w-full max-w-sm", className)}>
+    <Card className={cn('w-full max-w-sm', className)}>
       <CardHeader>
         <CardTitle className="text-xl font-semibold">
           {localization.auth.forgotPassword}
@@ -93,8 +98,8 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
                   onChange: ({ value }) =>
                     validateEmailAddress(value, {
                       invalidMessage: localization.auth.invalidEmail,
-                      requiredMessage: localization.auth.fieldRequired
-                    })
+                      requiredMessage: localization.auth.fieldRequired,
+                    }),
                 }}
               >
                 {(field) => {
@@ -141,7 +146,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
 
         <div className="flex flex-col gap-3 items-center w-full mt-4">
           <FieldDescription className="text-center">
-            {localization.auth.rememberYourPassword}{" "}
+            {localization.auth.rememberYourPassword}{' '}
             <Link
               href={`${basePaths.auth}/${viewPaths.auth.signIn}`}
               className="underline underline-offset-4"

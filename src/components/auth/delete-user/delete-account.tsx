@@ -1,18 +1,18 @@
 import {
   authQueryKeys,
   isReauthenticationRequiredError,
-  validateStringLength
-} from "@better-auth-ui/core"
+  validateStringLength,
+} from '@better-auth-ui/core'
 import {
   useAuth,
   useAuthPlugin,
   useDeleteUser,
-  useListAccounts
-} from "@better-auth-ui/react"
-import { useQueryClient } from "@tanstack/react-query"
-import { Eye, EyeOff, TriangleAlert } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
+  useListAccounts,
+} from '@better-auth-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { Eye, EyeOff, TriangleAlert } from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -22,21 +22,21 @@ import {
   AlertDialogHeader,
   AlertDialogMedia,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from "#/components/ui/alert-dialog.tsx"
-import { buttonVariants } from "#/components/ui/button.tsx"
-import { Card, CardContent } from "#/components/ui/card.tsx"
-import { Field, FieldLabel } from "#/components/ui/field.tsx"
+  AlertDialogTrigger,
+} from '#/components/ui/alert-dialog.tsx'
+import { buttonVariants } from '#/components/ui/button.tsx'
+import { Card, CardContent } from '#/components/ui/card.tsx'
+import { Field, FieldLabel } from '#/components/ui/field.tsx'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
-} from "#/components/ui/input-group.tsx"
-import { deleteUserPlugin } from "#/lib/auth/delete-user-plugin.ts"
-import { cn } from "cn"
-import { isAuthFormFieldInvalid, useAuthForm } from "../auth-form"
-import { ReauthenticationAction } from "../reauthentication"
+  InputGroupInput,
+} from '#/components/ui/input-group.tsx'
+import { deleteUserPlugin } from '#/lib/auth/delete-user-plugin.ts'
+import { cn } from 'cn'
+import { isAuthFormFieldInvalid, useAuthForm } from '../auth-form'
+import { ReauthenticationAction } from '../reauthentication'
 
 export type DeleteAccountProps = {
   className?: string
@@ -50,7 +50,7 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
 
   const {
     localization: deleteUserLocalization,
-    sendDeleteAccountVerification
+    sendDeleteAccountVerification,
   } = useAuthPlugin(deleteUserPlugin)
 
   const { data: accounts } = useListAccounts(authClient)
@@ -61,19 +61,19 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const hasCredentialAccount = accounts?.some(
-    (account) => account.providerId === "credential"
+    (account) => account.providerId === 'credential',
   )
   const needsPassword = !sendDeleteAccountVerification && hasCredentialAccount
 
   const deleteUser = useDeleteUser(authClient, {
-    meta: { errorPresentation: "inline" }
+    meta: { errorPresentation: 'inline' },
   })
   const needsReauthentication = isReauthenticationRequiredError(
-    deleteUser.error
+    deleteUser.error,
   )
 
   const form = useAuthForm({
-    defaultValues: { password: "" },
+    defaultValues: { password: '' },
     onSubmit: async ({ value }) => {
       await deleteUser.mutateAsync(
         needsPassword ? { password: value.password } : {},
@@ -89,13 +89,13 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
               queryClient.removeQueries({ queryKey: authQueryKeys.all })
               navigate({
                 to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
-                replace: true
+                replace: true,
               })
             }
-          }
-        }
+          },
+        },
       )
-    }
+    },
   })
 
   const handleDialogOpenChange = (open: boolean) => {
@@ -106,7 +106,7 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
   }
 
   return (
-    <Card className={cn("border-destructive", className)}>
+    <Card className={cn('border-destructive', className)}>
       <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-medium leading-tight">
@@ -121,7 +121,7 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
         <AlertDialog open={confirmOpen} onOpenChange={handleDialogOpenChange}>
           <AlertDialogTrigger
             className={cn(
-              buttonVariants({ variant: "destructive", size: "sm" })
+              buttonVariants({ variant: 'destructive', size: 'sm' }),
             )}
             disabled={!accounts}
           >
@@ -161,13 +161,13 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
                       validators={{
                         onChange: ({ value }) =>
                           validateStringLength(value, {
-                            requiredMessage: localization.auth.fieldRequired
-                          })
+                            requiredMessage: localization.auth.fieldRequired,
+                          }),
                       }}
                     >
                       {(field) => {
                         const isInvalid = isAuthFormFieldInvalid(
-                          field.state.meta
+                          field.state.meta,
                         )
                         return (
                           <Field data-invalid={isInvalid}>
@@ -179,7 +179,7 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
                               <InputGroupInput
                                 id="delete-password"
                                 name={field.name}
-                                type={isPasswordVisible ? "text" : "password"}
+                                type={isPasswordVisible ? 'text' : 'password'}
                                 autoComplete="current-password"
                                 placeholder={
                                   localization.auth.passwordPlaceholder

@@ -4,17 +4,17 @@ import {
   getAuthErrorCode,
   getAuthErrorMessage,
   getAuthErrorPresentation,
-  isPasswordCompromisedError
-} from "@better-auth-ui/core"
-import { oneTapMutationKeys } from "@better-auth-ui/core/plugins/one-tap"
-import { useAuth } from "@better-auth-ui/react"
+  isPasswordCompromisedError,
+} from '@better-auth-ui/core'
+import { oneTapMutationKeys } from '@better-auth-ui/core/plugins/one-tap'
+import { useAuth } from '@better-auth-ui/react'
 import {
   matchMutation,
   matchQuery,
-  useQueryClient
-} from "@tanstack/react-query"
-import { useEffect } from "react"
-import { toast } from "sonner"
+  useQueryClient,
+} from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export function ErrorToaster() {
   const { localization } = useAuth()
@@ -28,12 +28,12 @@ export function ErrorToaster() {
       previousQueryOnError?.(error, query)
 
       if (!matchQuery({ queryKey: authQueryKeys.all }, query)) return
-      if (getAuthErrorPresentation(query.meta) !== "toast") return
+      if (getAuthErrorPresentation(query.meta) !== 'toast') return
 
-      if (getAuthErrorCode(error) === "EMAIL_NOT_VERIFIED") return
+      if (getAuthErrorCode(error) === 'EMAIL_NOT_VERIFIED') return
       const message = getAuthErrorMessage(error, localization)
       if (message) {
-        console.error("[Better Auth UI]", error)
+        console.error('[Better Auth UI]', error)
         toast.error(message)
       }
     }
@@ -46,26 +46,26 @@ export function ErrorToaster() {
       variables,
       onMutateResult,
       mutation,
-      context
+      context,
     ) => {
       previousMutationOnError?.(
         error,
         variables,
         onMutateResult,
         mutation,
-        context
+        context,
       )
 
       if (!matchMutation({ mutationKey: authMutationKeys.all }, mutation)) {
         return
       }
-      if (getAuthErrorPresentation(mutation.meta) !== "toast") return
+      if (getAuthErrorPresentation(mutation.meta) !== 'toast') return
       // Every form that sets a new password renders this one against the
       // password field, so a toast would just repeat it.
       if (isPasswordCompromisedError(error)) return
 
       if (
-        getAuthErrorCode(error) === "EMAIL_NOT_VERIFIED" &&
+        getAuthErrorCode(error) === 'EMAIL_NOT_VERIFIED' &&
         !matchMutation({ mutationKey: oneTapMutationKeys.prompt }, mutation)
       ) {
         return
@@ -73,10 +73,10 @@ export function ErrorToaster() {
       const message = getAuthErrorMessage(
         error,
         localization,
-        mutation.options.mutationKey
+        mutation.options.mutationKey,
       )
       if (message) {
-        console.error("[Better Auth UI]", error)
+        console.error('[Better Auth UI]', error)
         toast.error(message)
       }
     }

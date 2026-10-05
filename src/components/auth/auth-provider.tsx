@@ -1,17 +1,18 @@
 import {
-  AuthProvider as AuthProviderPrimitive,
-  type AuthProviderProps
-} from "@better-auth-ui/react"
+  AuthProvider as AuthProviderPrimitive
+  
+} from '@better-auth-ui/react'
+import type {AuthProviderProps} from '@better-auth-ui/react';
 import type {
   ComponentPropsWithoutRef,
   ComponentType,
   PropsWithChildren,
-  ReactNode
-} from "react"
+  ReactNode,
+} from 'react'
 
-import { ErrorToaster } from "./error-toaster"
+import { ErrorToaster } from './error-toaster'
 
-declare module "@better-auth-ui/core" {
+declare module '@better-auth-ui/core' {
   interface AuthConfig {
     /**
      * React component used to render internal navigation links.
@@ -20,8 +21,8 @@ declare module "@better-auth-ui/core" {
     Link: ComponentType<
       PropsWithChildren<
         { className?: string; href: string; to?: string } & Pick<
-          ComponentPropsWithoutRef<"a">,
-          "aria-disabled" | "tabIndex" | "onClick"
+          ComponentPropsWithoutRef<'a'>,
+          'aria-disabled' | 'tabIndex' | 'onClick'
         >
       >
     >

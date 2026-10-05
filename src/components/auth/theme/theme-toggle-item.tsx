@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useAuthPlugin } from "@better-auth-ui/react"
-import { Monitor, Moon, PaletteIcon, Sun } from "lucide-react"
-import { useRef } from "react"
+import { useAuthPlugin } from '@better-auth-ui/react'
+import { Monitor, Moon, PaletteIcon, Sun } from 'lucide-react'
+import { useRef } from 'react'
 
-import { DropdownMenuItem } from "#/components/ui/dropdown-menu.tsx"
-import { Tabs, TabsList, TabsTrigger } from "#/components/ui/tabs.tsx"
-import { themePlugin } from "#/lib/auth/theme-plugin.ts"
+import { DropdownMenuItem } from '#/components/ui/dropdown-menu.tsx'
+import { Tabs, TabsList, TabsTrigger } from '#/components/ui/tabs.tsx'
+import { themePlugin } from '#/lib/auth/theme-plugin.ts'
 
 /**
  * Theme toggle dropdown item used inside `UserButton`. Callers are responsible
@@ -23,7 +23,7 @@ export function ThemeToggleItem() {
   // inside, letting the user switch themes with Left/Right arrows.
   const focusActiveTab = () => {
     const activeTab = tabsListRef.current?.querySelector<HTMLElement>(
-      '[role="tab"][data-state="active"]'
+      '[role="tab"][data-state="active"]',
     )
     activeTab?.focus({ preventScroll: true })
   }
@@ -31,25 +31,25 @@ export function ThemeToggleItem() {
   // Up/Down on a TabsTrigger escapes back to the previous/next sibling
   // menu item so users can keep navigating the menu with the arrow keys.
   const handleTabsKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return
+    if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return
 
     const target = event.target as HTMLElement
-    if (target.getAttribute("role") !== "tab") return
+    if (target.getAttribute('role') !== 'tab') return
 
     const wrapper = target.closest<HTMLElement>('[role="menuitem"]')
     const content = wrapper?.closest<HTMLElement>(
-      '[data-slot="dropdown-menu-content"]'
+      '[data-slot="dropdown-menu-content"]',
     )
     if (!wrapper || !content) return
 
     const items = Array.from(
       content.querySelectorAll<HTMLElement>(
-        '[role="menuitem"]:not([aria-disabled="true"])'
-      )
+        '[role="menuitem"]:not([aria-disabled="true"])',
+      ),
     )
     const currentIndex = items.indexOf(wrapper)
     const nextIndex =
-      event.key === "ArrowDown" ? currentIndex + 1 : currentIndex - 1
+      event.key === 'ArrowDown' ? currentIndex + 1 : currentIndex - 1
     const next = items[nextIndex]
     if (!next) return
 
@@ -77,7 +77,7 @@ export function ThemeToggleItem() {
         onKeyDown={handleTabsKeyDown}
       >
         <TabsList ref={tabsListRef} className="h-6!">
-          {themes.includes("system") && (
+          {themes.includes('system') && (
             <TabsTrigger
               value="system"
               className="size-5 p-0"
@@ -86,7 +86,7 @@ export function ThemeToggleItem() {
               <Monitor className="size-3" />
             </TabsTrigger>
           )}
-          {themes.includes("light") && (
+          {themes.includes('light') && (
             <TabsTrigger
               value="light"
               className="size-5 p-0"
@@ -95,7 +95,7 @@ export function ThemeToggleItem() {
               <Sun className="size-3" />
             </TabsTrigger>
           )}
-          {themes.includes("dark") && (
+          {themes.includes('dark') && (
             <TabsTrigger
               value="dark"
               className="size-5 p-0"

@@ -2,21 +2,21 @@ import {
   ThemePreviewDark,
   ThemePreviewLight,
   ThemePreviewSystem,
-  useAuthPlugin
-} from "@better-auth-ui/react"
-import { Monitor, Moon, Sun } from "lucide-react"
-import { useEffect, useState } from "react"
+  useAuthPlugin,
+} from '@better-auth-ui/react'
+import { Monitor, Moon, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-import { Card, CardContent } from "#/components/ui/card.tsx"
+import { Card, CardContent } from '#/components/ui/card.tsx'
 import {
   Field,
   FieldContent,
   FieldLabel,
-  FieldTitle
-} from "#/components/ui/field.tsx"
-import { RadioGroup, RadioGroupItem } from "#/components/ui/radio-group.tsx"
-import { themePlugin } from "#/lib/auth/theme-plugin.ts"
-import { cn } from "cn"
+  FieldTitle,
+} from '#/components/ui/field.tsx'
+import { RadioGroup, RadioGroupItem } from '#/components/ui/radio-group.tsx'
+import { themePlugin } from '#/lib/auth/theme-plugin.ts'
+import { cn } from 'cn'
 
 export type AppearanceProps = {
   className?: string
@@ -48,12 +48,12 @@ export function Appearance({ className }: AppearanceProps) {
             <FieldLabel>{localization.theme}</FieldLabel>
 
             <RadioGroup
-              value={isMounted ? theme : ""}
+              value={isMounted ? theme : ''}
               onValueChange={setTheme}
               className="grid gap-3 grid-cols-2 sm:grid-cols-3"
               disabled={!isMounted || !theme}
             >
-              {themes.includes("system") && (
+              {themes.includes('system') && (
                 <FieldLabel htmlFor="system">
                   <Field orientation="horizontal">
                     <FieldContent className="gap-2">
@@ -73,7 +73,7 @@ export function Appearance({ className }: AppearanceProps) {
                 </FieldLabel>
               )}
 
-              {themes.includes("light") && (
+              {themes.includes('light') && (
                 <FieldLabel htmlFor="light">
                   <Field orientation="horizontal">
                     <FieldContent className="gap-2">
@@ -93,7 +93,7 @@ export function Appearance({ className }: AppearanceProps) {
                 </FieldLabel>
               )}
 
-              {themes.includes("dark") && (
+              {themes.includes('dark') && (
                 <FieldLabel htmlFor="dark">
                   <Field orientation="horizontal">
                     <FieldContent className="gap-2">

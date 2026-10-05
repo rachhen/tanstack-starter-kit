@@ -1,33 +1,33 @@
-import { useAuth, useRevokeSession, useSession } from "@better-auth-ui/react"
-import type { Session } from "better-auth"
-import Bowser from "bowser"
-import { LogOut, Monitor, Smartphone, X } from "lucide-react"
-import { toast } from "sonner"
+import { useAuth, useRevokeSession, useSession } from '@better-auth-ui/react'
+import type { Session } from 'better-auth'
+import Bowser from 'bowser'
+import { LogOut, Monitor, Smartphone, X } from 'lucide-react'
+import { toast } from 'sonner'
 
-import { Badge } from "#/components/ui/badge.tsx"
-import { Button } from "#/components/ui/button.tsx"
+import { Badge } from '#/components/ui/badge.tsx'
+import { Button } from '#/components/ui/button.tsx'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemMedia,
-  ItemTitle
-} from "#/components/ui/item.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
+  ItemTitle,
+} from '#/components/ui/item.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
 
 function timeAgo(date: Date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000)
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" })
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' })
 
   const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
-    ["year", 31536000],
-    ["month", 2592000],
-    ["week", 604800],
-    ["day", 86400],
-    ["hour", 3600],
-    ["minute", 60],
-    ["second", 1]
+    ['year', 31536000],
+    ['month', 2592000],
+    ['week', 604800],
+    ['day', 86400],
+    ['hour', 3600],
+    ['minute', 60],
+    ['second', 1],
   ]
 
   for (const [unit, threshold] of UNITS) {
@@ -36,7 +36,7 @@ function timeAgo(date: Date) {
     }
   }
 
-  return rtf.format(0, "second")
+  return rtf.format(0, 'second')
 }
 
 export type ActiveSessionProps = {
@@ -59,8 +59,9 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
   const { mutate: revokeSession, isPending: isRevoking } = useRevokeSession(
     authClient,
     {
-      onSuccess: () => toast.success(localization.settings.revokeSessionSuccess)
-    }
+      onSuccess: () =>
+        toast.success(localization.settings.revokeSessionSuccess),
+    },
   )
 
   const isCurrentSession = activeSession.token === session?.session.token
@@ -68,7 +69,7 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
     ? Bowser.parse(activeSession.userAgent)
     : undefined
   const isMobile =
-    ua?.platform.type === "mobile" || ua?.platform.type === "tablet"
+    ua?.platform.type === 'mobile' || ua?.platform.type === 'tablet'
 
   return (
     <Item>
@@ -77,8 +78,8 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
       </ItemMedia>
       <ItemContent>
         <ItemTitle>
-          {ua?.browser.name || "Unknown Browser"}
-          {ua?.os.name ? `, ${ua.os.name}` : ""}
+          {ua?.browser.name || 'Unknown Browser'}
+          {ua?.os.name ? `, ${ua.os.name}` : ''}
         </ItemTitle>
         {isCurrentSession ? (
           <Badge variant="secondary">
@@ -99,7 +100,7 @@ export function ActiveSession({ activeSession }: ActiveSessionProps) {
           onClick={() =>
             isCurrentSession
               ? navigate({
-                  to: `${basePaths.auth}/${viewPaths.auth.signOut}`
+                  to: `${basePaths.auth}/${viewPaths.auth.signOut}`,
                 })
               : revokeSession(activeSession)
           }

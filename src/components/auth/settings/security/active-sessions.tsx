@@ -1,21 +1,21 @@
-"use client"
+'use client'
 
-import { isReauthenticationRequiredError } from "@better-auth-ui/core"
-import { useAuth, useListSessions, useSession } from "@better-auth-ui/react"
-import { Fragment } from "react"
-import { Card, CardContent } from "#/components/ui/card.tsx"
+import { isReauthenticationRequiredError } from '@better-auth-ui/core'
+import { useAuth, useListSessions, useSession } from '@better-auth-ui/react'
+import { Fragment } from 'react'
+import { Card, CardContent } from '#/components/ui/card.tsx'
 import {
   Item,
   ItemContent,
   ItemGroup,
   ItemMedia,
-  ItemSeparator
-} from "#/components/ui/item.tsx"
-import { Skeleton } from "#/components/ui/skeleton.tsx"
-import { cn } from "cn"
-import { ReauthenticationAction } from "../../reauthentication"
-import { ActiveSession } from "./active-session"
-import { SessionActions } from "./session-actions"
+  ItemSeparator,
+} from '#/components/ui/item.tsx'
+import { Skeleton } from '#/components/ui/skeleton.tsx'
+import { cn } from 'cn'
+import { ReauthenticationAction } from '../../reauthentication'
+import { ActiveSession } from './active-session'
+import { SessionActions } from './session-actions'
 
 export type ActiveSessionsProps = {
   className?: string
@@ -34,12 +34,12 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
   const { data: session } = useSession(authClient)
 
   const sessionsQuery = useListSessions(authClient, {
-    meta: { errorPresentation: "inline" }
+    meta: { errorPresentation: 'inline' },
   })
   const { data: sessions, error, isPending } = sessionsQuery
 
   const activeSessions = [...(sessions ?? [])].sort((activeSession) =>
-    activeSession.id === session?.session.id ? -1 : 1
+    activeSession.id === session?.session.id ? -1 : 1,
   )
 
   return (
@@ -48,7 +48,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
         {localization.settings.activeSessions}
       </h2>
 
-      <Card className={cn("gap-0 p-0", className)}>
+      <Card className={cn('gap-0 p-0', className)}>
         <CardContent className="p-0">
           {isReauthenticationRequiredError(error) ? (
             <ReauthenticationAction />
@@ -70,7 +70,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
         {!isPending && !error && (
           <SessionActions
             hasOtherSessions={activeSessions.some(
-              (activeSession) => activeSession.id !== session?.session.id
+              (activeSession) => activeSession.id !== session?.session.id,
             )}
           />
         )}

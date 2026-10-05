@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react"
+import { useSyncExternalStore } from 'react'
 
 /**
  * Returns `true` once the component is mounted on the client (hydrated) and
@@ -12,6 +12,6 @@ export function useIsHydrated() {
   return useSyncExternalStore(
     subscribe,
     () => true,
-    () => false
+    () => false,
   )
 }

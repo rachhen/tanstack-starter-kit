@@ -2,24 +2,24 @@ import {
   fieldsWithModelValues,
   getAdditionalFieldDefaultValues,
   getAdditionalFieldSubmitValues,
-  validateStringLength
-} from "@better-auth-ui/core"
-import type { UsernameAuthClient } from "@better-auth-ui/core/plugins/username"
-import { useAuth, useSession, useUpdateUser } from "@better-auth-ui/react"
-import { useEffect, useMemo } from "react"
-import { toast } from "sonner"
+  validateStringLength,
+} from '@better-auth-ui/core'
+import type { UsernameAuthClient } from '@better-auth-ui/core/plugins/username'
+import { useAuth, useSession, useUpdateUser } from '@better-auth-ui/react'
+import { useEffect, useMemo } from 'react'
+import { toast } from 'sonner'
 
-import { Card, CardContent, CardFooter } from "#/components/ui/card.tsx"
-import { Field, FieldLabel } from "#/components/ui/field.tsx"
-import { Input } from "#/components/ui/input.tsx"
-import { Skeleton } from "#/components/ui/skeleton.tsx"
-import { cn } from "cn"
+import { Card, CardContent, CardFooter } from '#/components/ui/card.tsx'
+import { Field, FieldLabel } from '#/components/ui/field.tsx'
+import { Input } from '#/components/ui/input.tsx'
+import { Skeleton } from '#/components/ui/skeleton.tsx'
+import { cn } from 'cn'
 import {
   getAuthAdditionalFieldValidators,
   isAuthFormFieldInvalid,
-  useAuthForm
-} from "../../auth-form"
-import { ChangeAvatar } from "./change-avatar"
+  useAuthForm,
+} from '../../auth-form'
+import { ChangeAvatar } from './change-avatar'
 
 export type UserProfileProps = {
   className?: string
@@ -37,26 +37,29 @@ export function UserProfile({ className }: UserProfileProps) {
   const { data: session } = useSession(authClient)
 
   const { mutateAsync: updateUser, isPending } = useUpdateUser(authClient, {
-    onSuccess: () => toast.success(localization.settings.profileUpdatedSuccess)
+    onSuccess: () => toast.success(localization.settings.profileUpdatedSuccess),
   })
 
   const profileFields = useMemo(
     () => additionalFields?.filter((field) => field.profile !== false) ?? [],
-    [additionalFields]
+    [additionalFields],
   )
   const hasProfileFields =
-    profile.name || profileFields.some((field) => field.inputType !== "hidden")
+    profile.name || profileFields.some((field) => field.inputType !== 'hidden')
   const form = useAuthForm({
     defaultValues: {
       additionalFields: getAdditionalFieldDefaultValues(profileFields),
-      name: ""
+      name: '',
     },
     onSubmit: async ({ value }) => {
       await updateUser({
         ...(profile.name && { name: value.name }),
-        ...getAdditionalFieldSubmitValues(profileFields, value.additionalFields)
+        ...getAdditionalFieldSubmitValues(
+          profileFields,
+          value.additionalFields,
+        ),
       })
-    }
+    },
   })
 
   useEffect(() => {
@@ -65,10 +68,10 @@ export function UserProfile({ className }: UserProfileProps) {
       additionalFields: getAdditionalFieldDefaultValues(
         fieldsWithModelValues(
           profileFields,
-          session.user as Record<string, unknown>
-        )
+          session.user,
+        ),
       ),
-      name: session.user.name
+      name: session.user.name,
     })
   }, [form, profileFields, session])
 
@@ -93,8 +96,8 @@ export function UserProfile({ className }: UserProfileProps) {
                     onChange: ({ value }) =>
                       validateStringLength(value, {
                         requiredMessage: localization.auth.fieldRequired,
-                        trim: true
-                      })
+                        trim: true,
+                      }),
                   }}
                 >
                   {(field) => {
@@ -135,7 +138,7 @@ export function UserProfile({ className }: UserProfileProps) {
 
               {profileFields.map((configuredField) => {
                 if (!session) {
-                  if (configuredField.inputType === "hidden") {
+                  if (configuredField.inputType === 'hidden') {
                     return null
                   }
 
@@ -152,7 +155,7 @@ export function UserProfile({ className }: UserProfileProps) {
                     name={`additionalFields.${configuredField.name}`}
                     validators={getAuthAdditionalFieldValidators(
                       configuredField,
-                      localization.auth.fieldRequired
+                      localization.auth.fieldRequired,
                     )}
                   >
                     {(field) => (

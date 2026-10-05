@@ -1,38 +1,38 @@
-"use client"
+'use client'
 
 import {
   getViewURL,
   isPasswordCompromisedError,
   validateMatchingValue,
-  validateStringLength
-} from "@better-auth-ui/core"
+  validateStringLength,
+} from '@better-auth-ui/core'
 import {
   useAuth,
   useChangePassword,
   useFetchOptions,
   useListAccounts,
   useRequestPasswordReset,
-  useSession
-} from "@better-auth-ui/react"
-import { Eye, EyeOff } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
-import { Button } from "#/components/ui/button.tsx"
-import { Card, CardContent, CardFooter } from "#/components/ui/card.tsx"
-import { Field, FieldError, FieldLabel } from "#/components/ui/field.tsx"
-import { Input } from "#/components/ui/input.tsx"
+  useSession,
+} from '@better-auth-ui/react'
+import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { Button } from '#/components/ui/button.tsx'
+import { Card, CardContent, CardFooter } from '#/components/ui/card.tsx'
+import { Field, FieldError, FieldLabel } from '#/components/ui/field.tsx'
+import { Input } from '#/components/ui/input.tsx'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
-} from "#/components/ui/input-group.tsx"
-import { Skeleton } from "#/components/ui/skeleton.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
-import { cn } from "cn"
-import { isAuthFormFieldInvalid, useAuthForm } from "../../auth-form"
-import { OpenEmailButton } from "../../open-email-button"
-import { PasswordStrengthMeter } from "../../password-strength-meter"
+  InputGroupInput,
+} from '#/components/ui/input-group.tsx'
+import { Skeleton } from '#/components/ui/skeleton.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
+import { cn } from 'cn'
+import { isAuthFormFieldInvalid, useAuthForm } from '../../auth-form'
+import { OpenEmailButton } from '../../open-email-button'
+import { PasswordStrengthMeter } from '../../password-strength-meter'
 
 export type ChangePasswordProps = {
   className?: string
@@ -54,7 +54,7 @@ export function ChangePassword({ className }: ChangePasswordProps) {
     useListAccounts(authClient)
 
   const hasCredentialAccount = accounts?.some(
-    (account) => account.providerId === "credential"
+    (account) => account.providerId === 'credential',
   )
 
   if (!isAccountsPending && !hasCredentialAccount) {
@@ -76,7 +76,7 @@ function SetPassword({ className }: { className?: string }) {
     useAuth()
   const { data: session } = useSession(authClient)
   const { fetchOptions, resetFetchOptions } = useFetchOptions()
-  const [sentEmail, setSentEmail] = useState("")
+  const [sentEmail, setSentEmail] = useState('')
 
   const { mutate: requestPasswordReset, isPending } = useRequestPasswordReset(
     authClient,
@@ -86,12 +86,12 @@ function SetPassword({ className }: { className?: string }) {
       },
       onSuccess: (_data, { email }) => {
         setSentEmail(email)
-      }
-    }
+      },
+    },
   )
 
   const Captcha = plugins.find(
-    (plugin) => plugin.captchaComponent
+    (plugin) => plugin.captchaComponent,
   )?.captchaComponent
 
   const handleSetPassword = () => {
@@ -102,9 +102,9 @@ function SetPassword({ className }: { className?: string }) {
       redirectTo: getViewURL(
         baseURL,
         basePaths.auth,
-        viewPaths.auth.resetPassword
+        viewPaths.auth.resetPassword,
       ),
-      fetchOptions
+      fetchOptions,
     })
   }
 
@@ -130,8 +130,8 @@ function SetPassword({ className }: { className?: string }) {
             <div className="flex flex-col gap-3 items-start sm:items-end">
               <p className="text-sm" role="status">
                 {localization.auth.resetLinkSentTo.replace(
-                  "{{email}}",
-                  sentEmail
+                  '{{email}}',
+                  sentEmail,
                 )}
               </p>
 
@@ -162,12 +162,12 @@ function ChangePasswordForm({
   className,
   emailAndPassword,
   localization,
-  session
+  session,
 }: {
   className?: string
-  emailAndPassword: ReturnType<typeof useAuth>["emailAndPassword"]
-  localization: ReturnType<typeof useAuth>["localization"]
-  session: ReturnType<typeof useSession>["data"]
+  emailAndPassword: ReturnType<typeof useAuth>['emailAndPassword']
+  localization: ReturnType<typeof useAuth>['localization']
+  session: ReturnType<typeof useSession>['data']
 }) {
   const { authClient } = useAuth()
   const { mutateAsync: changePassword, isPending } = useChangePassword(
@@ -181,8 +181,8 @@ function ChangePasswordForm({
       onSuccess: () => {
         form.reset()
         toast.success(localization.settings.changePasswordSuccess)
-      }
-    }
+      },
+    },
   )
 
   const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] =
@@ -195,21 +195,21 @@ function ChangePasswordForm({
 
   const form = useAuthForm({
     defaultValues: {
-      confirmPassword: "",
-      currentPassword: "",
-      newPassword: ""
+      confirmPassword: '',
+      currentPassword: '',
+      newPassword: '',
     },
     onSubmit: async ({ value }) => {
       try {
         await changePassword({
           currentPassword: value.currentPassword,
           newPassword: value.newPassword,
-          revokeOtherSessions: true
+          revokeOtherSessions: true,
         })
       } catch {
         // The mutation reports the error through its configured handler.
       }
-    }
+    },
   })
 
   return (
@@ -227,8 +227,8 @@ function ChangePasswordForm({
                 validators={{
                   onChange: ({ value }) =>
                     validateStringLength(value, {
-                      requiredMessage: localization.auth.fieldRequired
-                    })
+                      requiredMessage: localization.auth.fieldRequired,
+                    }),
                 }}
               >
                 {(field) => (
@@ -244,7 +244,7 @@ function ChangePasswordForm({
                         <InputGroupInput
                           id="currentPassword"
                           name={field.name}
-                          type={isCurrentPasswordVisible ? "text" : "password"}
+                          type={isCurrentPasswordVisible ? 'text' : 'password'}
                           autoComplete="current-password"
                           placeholder={
                             localization.settings.currentPasswordPlaceholder
@@ -255,7 +255,7 @@ function ChangePasswordForm({
                           disabled={isPending}
                           required
                           aria-invalid={isAuthFormFieldInvalid(
-                            field.state.meta
+                            field.state.meta,
                           )}
                         />
 
@@ -298,16 +298,16 @@ function ChangePasswordForm({
                     validateStringLength(value, {
                       maxLength: emailAndPassword.maxPasswordLength,
                       maxLengthMessage: localization.auth.tooLong.replace(
-                        "{{max}}",
-                        String(emailAndPassword.maxPasswordLength)
+                        '{{max}}',
+                        String(emailAndPassword.maxPasswordLength),
                       ),
                       minLength: emailAndPassword.minPasswordLength,
                       minLengthMessage: localization.auth.tooShort.replace(
-                        "{{min}}",
-                        String(emailAndPassword.minPasswordLength)
+                        '{{min}}',
+                        String(emailAndPassword.minPasswordLength),
                       ),
-                      requiredMessage: localization.auth.fieldRequired
-                    })
+                      requiredMessage: localization.auth.fieldRequired,
+                    }),
                 }}
               >
                 {(field) => {
@@ -325,7 +325,7 @@ function ChangePasswordForm({
                           <InputGroupInput
                             id="newPassword"
                             name={field.name}
-                            type={isNewPasswordVisible ? "text" : "password"}
+                            type={isNewPasswordVisible ? 'text' : 'password'}
                             autoComplete="new-password"
                             placeholder={
                               localization.auth.newPasswordPlaceholder
@@ -383,26 +383,26 @@ function ChangePasswordForm({
                 <form.AppField
                   name="confirmPassword"
                   validators={{
-                    onChangeListenTo: ["newPassword"],
+                    onChangeListenTo: ['newPassword'],
                     onChange: ({ fieldApi, value }) =>
                       validateStringLength(value, {
                         maxLength: emailAndPassword.maxPasswordLength,
                         maxLengthMessage: localization.auth.tooLong.replace(
-                          "{{max}}",
-                          String(emailAndPassword.maxPasswordLength)
+                          '{{max}}',
+                          String(emailAndPassword.maxPasswordLength),
                         ),
                         minLength: emailAndPassword.minPasswordLength,
                         minLengthMessage: localization.auth.tooShort.replace(
-                          "{{min}}",
-                          String(emailAndPassword.minPasswordLength)
+                          '{{min}}',
+                          String(emailAndPassword.minPasswordLength),
                         ),
-                        requiredMessage: localization.auth.fieldRequired
+                        requiredMessage: localization.auth.fieldRequired,
                       }) ??
                       validateMatchingValue(
                         value,
-                        fieldApi.form.getFieldValue("newPassword"),
-                        localization.auth.passwordsDoNotMatch
-                      )
+                        fieldApi.form.getFieldValue('newPassword'),
+                        localization.auth.passwordsDoNotMatch,
+                      ),
                   }}
                 >
                   {(field) => (
@@ -419,7 +419,7 @@ function ChangePasswordForm({
                             id="confirmPassword"
                             name={field.name}
                             type={
-                              isConfirmPasswordVisible ? "text" : "password"
+                              isConfirmPasswordVisible ? 'text' : 'password'
                             }
                             autoComplete="new-password"
                             placeholder={
@@ -433,7 +433,7 @@ function ChangePasswordForm({
                             disabled={isPending}
                             required
                             aria-invalid={isAuthFormFieldInvalid(
-                              field.state.meta
+                              field.state.meta,
                             )}
                           />
 
@@ -447,7 +447,7 @@ function ChangePasswordForm({
                               }
                               onClick={() =>
                                 setIsConfirmPasswordVisible(
-                                  (visible) => !visible
+                                  (visible) => !visible,
                                 )
                               }
                             >

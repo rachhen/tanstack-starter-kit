@@ -1,3 +1,5 @@
+import { AppSidebar } from '#/components/app-sidebar'
+import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar'
 import { auth } from '#/lib/auth'
 import { authClient } from '#/lib/auth-client'
 import { ensureSession } from '@better-auth-ui/core'
@@ -31,5 +33,12 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
-  return <Outlet />
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

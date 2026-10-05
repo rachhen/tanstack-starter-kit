@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
 import {
   getReauthenticationSignInURL,
-  isReauthenticationSignInURL
-} from "@better-auth-ui/core"
-import { useAuth, useSignOut } from "@better-auth-ui/react"
-import { useSyncExternalStore } from "react"
-import { Alert, AlertDescription, AlertTitle } from "#/components/ui/alert.tsx"
-import { Button } from "#/components/ui/button.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
-import { cn } from "cn"
+  isReauthenticationSignInURL,
+} from '@better-auth-ui/core'
+import { useAuth, useSignOut } from '@better-auth-ui/react'
+import { useSyncExternalStore } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '#/components/ui/alert.tsx'
+import { Button } from '#/components/ui/button.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
+import { cn } from 'cn'
 
 const subscribeToLocation = () => () => undefined
 
@@ -17,7 +17,7 @@ function useIsReauthenticationSignIn() {
   return useSyncExternalStore(
     subscribeToLocation,
     () => isReauthenticationSignInURL(new URL(window.location.href)),
-    () => false
+    () => false,
   )
 }
 
@@ -28,7 +28,7 @@ export type ReauthenticationActionProps = {
 
 export function ReauthenticationAction({
   className,
-  showTitle = true
+  showTitle = true,
 }: ReauthenticationActionProps) {
   const auth = useAuth()
   const signOut = useSignOut(auth.authClient)
@@ -36,15 +36,15 @@ export function ReauthenticationAction({
   const handleReauthentication = () => {
     const signInURL = getReauthenticationSignInURL(
       new URL(window.location.href),
-      `${auth.basePaths.auth}/${auth.viewPaths.auth.signIn}`
+      `${auth.basePaths.auth}/${auth.viewPaths.auth.signIn}`,
     )
     signOut.mutate(undefined, {
-      onSuccess: () => auth.navigate({ to: signInURL })
+      onSuccess: () => auth.navigate({ to: signInURL }),
     })
   }
 
   return (
-    <div className={cn("flex flex-col items-start gap-3 p-4", className)}>
+    <div className={cn('flex flex-col items-start gap-3 p-4', className)}>
       <div className="flex flex-col gap-1">
         {showTitle ? (
           <h3 className="text-sm font-medium">

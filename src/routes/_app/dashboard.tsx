@@ -1,18 +1,20 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { session } = Route.useRouteContext()
+  // const { session } = Route.useRouteContext()
 
   return (
-    <div className="flex flex-col items-center my-auto">
-      <h1 className="text-2xl">Hello, {session.user.email}</h1>
-      <Link to="/auth/$path" params={{ path: 'sign-out' }}>
-        Sign Out
-      </Link>
+    <div className="flex flex-1 flex-col gap-4 p-4">
+      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+        <div className="aspect-video rounded-xl bg-muted/50" />
+        <div className="aspect-video rounded-xl bg-muted/50" />
+        <div className="aspect-video rounded-xl bg-muted/50" />
+      </div>
+      <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
     </div>
   )
 }

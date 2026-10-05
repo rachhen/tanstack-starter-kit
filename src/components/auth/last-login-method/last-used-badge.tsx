@@ -1,6 +1,6 @@
-import { useLastLoginMethod } from "@better-auth-ui/react"
+import { useLastLoginMethod } from '@better-auth-ui/react'
 
-import { Badge } from "#/components/ui/badge.tsx"
+import { Badge } from '#/components/ui/badge.tsx'
 
 export type LastUsedBadgeProps = {
   /** Login method IDs that should display the indicator. */
@@ -18,7 +18,7 @@ export type LastUsedBadgeProps = {
 export function LastUsedBadge({
   method,
   compact,
-  floating
+  floating,
 }: LastUsedBadgeProps) {
   const { method: lastLoginMethod, localization } = useLastLoginMethod()
   const methods = Array.isArray(method) ? method : [method]
@@ -29,7 +29,7 @@ export function LastUsedBadge({
     <Badge
       className={
         floating
-          ? "pointer-events-none absolute top-0 right-0 z-10 translate-x-1/4 -translate-y-1/2 shadow-sm"
+          ? 'pointer-events-none absolute top-0 right-0 z-10 translate-x-1/4 -translate-y-1/2 shadow-sm'
           : undefined
       }
       variant="secondary"

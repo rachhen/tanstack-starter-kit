@@ -1,33 +1,38 @@
-"use client"
+'use client'
 
 import {
   getAuthLinkURL,
   isPasswordCompromisedError,
   validateMatchingValue,
-  validateStringLength
-} from "@better-auth-ui/core"
-import { useAuth, useResetPassword } from "@better-auth-ui/react"
-import { Eye, EyeOff } from "lucide-react"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
+  validateStringLength,
+} from '@better-auth-ui/core'
+import { useAuth, useResetPassword } from '@better-auth-ui/react'
+import { Eye, EyeOff } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card.tsx"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '#/components/ui/card.tsx'
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
-  FieldLabel
-} from "#/components/ui/field.tsx"
+  FieldLabel,
+} from '#/components/ui/field.tsx'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
-} from "#/components/ui/input-group.tsx"
-import { cn } from "cn"
-import { isAuthFormFieldInvalid, useAuthForm } from "./auth-form"
-import { PasswordStrengthMeter } from "./password-strength-meter"
+  InputGroupInput,
+} from '#/components/ui/input-group.tsx'
+import { cn } from 'cn'
+import { isAuthFormFieldInvalid, useAuthForm } from './auth-form'
+import { PasswordStrengthMeter } from './password-strength-meter'
 
 export type ResetPasswordProps = {
   className?: string
@@ -49,11 +54,11 @@ export function ResetPassword({ className }: ResetPasswordProps) {
     navigate,
     redirectTo,
     viewPaths,
-    Link
+    Link,
   } = useAuth()
   const signInURL = getAuthLinkURL(
     `${basePaths.auth}/${viewPaths.auth.signIn}`,
-    redirectTo
+    redirectTo,
   )
 
   const { mutateAsync: resetPassword, isPending } = useResetPassword(
@@ -69,8 +74,8 @@ export function ResetPassword({ className }: ResetPasswordProps) {
       onSuccess: () => {
         toast.success(localization.auth.passwordResetSuccess)
         navigate({ to: signInURL })
-      }
-    }
+      },
+    },
   )
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -80,7 +85,7 @@ export function ResetPassword({ className }: ResetPasswordProps) {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
-    const token = searchParams.get("token") as string
+    const token = searchParams.get('token') as string
 
     if (!token) {
       toast.error(localization.auth.invalidResetPasswordToken)
@@ -89,10 +94,10 @@ export function ResetPassword({ className }: ResetPasswordProps) {
   }, [localization.auth.invalidResetPasswordToken, navigate, signInURL])
 
   const form = useAuthForm({
-    defaultValues: { confirmPassword: "", password: "" },
+    defaultValues: { confirmPassword: '', password: '' },
     onSubmit: async ({ value }) => {
       const searchParams = new URLSearchParams(window.location.search)
-      const token = searchParams.get("token") as string
+      const token = searchParams.get('token') as string
 
       if (!token) {
         toast.error(localization.auth.invalidResetPasswordToken)
@@ -105,11 +110,11 @@ export function ResetPassword({ className }: ResetPasswordProps) {
       } catch {
         // The mutation reports the error through its configured handler.
       }
-    }
+    },
   })
 
   return (
-    <Card className={cn("w-full max-w-sm", className)}>
+    <Card className={cn('w-full max-w-sm', className)}>
       <CardHeader>
         <CardTitle className="text-xl font-semibold">
           {localization.auth.resetPassword}
@@ -127,16 +132,16 @@ export function ResetPassword({ className }: ResetPasswordProps) {
                     validateStringLength(value, {
                       maxLength: emailAndPassword?.maxPasswordLength,
                       maxLengthMessage: localization.auth.tooLong.replace(
-                        "{{max}}",
-                        String(emailAndPassword?.maxPasswordLength)
+                        '{{max}}',
+                        String(emailAndPassword?.maxPasswordLength),
                       ),
                       minLength: emailAndPassword?.minPasswordLength,
                       minLengthMessage: localization.auth.tooShort.replace(
-                        "{{min}}",
-                        String(emailAndPassword?.minPasswordLength)
+                        '{{min}}',
+                        String(emailAndPassword?.minPasswordLength),
                       ),
-                      requiredMessage: localization.auth.fieldRequired
-                    })
+                      requiredMessage: localization.auth.fieldRequired,
+                    }),
                 }}
               >
                 {(field) => {
@@ -152,7 +157,7 @@ export function ResetPassword({ className }: ResetPasswordProps) {
                       <InputGroup>
                         <InputGroupInput
                           id="password"
-                          type={isPasswordVisible ? "text" : "password"}
+                          type={isPasswordVisible ? 'text' : 'password'}
                           autoComplete="new-password"
                           placeholder={localization.auth.newPasswordPlaceholder}
                           required
@@ -209,26 +214,26 @@ export function ResetPassword({ className }: ResetPasswordProps) {
                 <form.AppField
                   name="confirmPassword"
                   validators={{
-                    onChangeListenTo: ["password"],
+                    onChangeListenTo: ['password'],
                     onChange: ({ fieldApi, value }) =>
                       validateStringLength(value, {
                         maxLength: emailAndPassword?.maxPasswordLength,
                         maxLengthMessage: localization.auth.tooLong.replace(
-                          "{{max}}",
-                          String(emailAndPassword?.maxPasswordLength)
+                          '{{max}}',
+                          String(emailAndPassword?.maxPasswordLength),
                         ),
                         minLength: emailAndPassword?.minPasswordLength,
                         minLengthMessage: localization.auth.tooShort.replace(
-                          "{{min}}",
-                          String(emailAndPassword?.minPasswordLength)
+                          '{{min}}',
+                          String(emailAndPassword?.minPasswordLength),
                         ),
-                        requiredMessage: localization.auth.fieldRequired
+                        requiredMessage: localization.auth.fieldRequired,
                       }) ??
                       validateMatchingValue(
                         value,
-                        fieldApi.form.getFieldValue("password"),
-                        localization.auth.passwordsDoNotMatch
-                      )
+                        fieldApi.form.getFieldValue('password'),
+                        localization.auth.passwordsDoNotMatch,
+                      ),
                   }}
                 >
                   {(field) => {
@@ -245,7 +250,7 @@ export function ResetPassword({ className }: ResetPasswordProps) {
                             id="confirmPassword"
                             name={field.name}
                             type={
-                              isConfirmPasswordVisible ? "text" : "password"
+                              isConfirmPasswordVisible ? 'text' : 'password'
                             }
                             autoComplete="new-password"
                             placeholder={
@@ -278,7 +283,7 @@ export function ResetPassword({ className }: ResetPasswordProps) {
                               }
                               onClick={() => {
                                 setIsConfirmPasswordVisible(
-                                  (visible) => !visible
+                                  (visible) => !visible,
                                 )
                               }}
                             >
@@ -305,11 +310,11 @@ export function ResetPassword({ className }: ResetPasswordProps) {
 
         <div className="flex flex-col gap-3 items-center w-full mt-4">
           <FieldDescription className="text-center">
-            {localization.auth.rememberYourPassword}{" "}
+            {localization.auth.rememberYourPassword}{' '}
             <Link
               href={getAuthLinkURL(
                 `${basePaths.auth}/${viewPaths.auth.signIn}`,
-                redirectTo
+                redirectTo,
               )}
               className="underline underline-offset-4"
             >

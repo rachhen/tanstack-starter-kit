@@ -1,17 +1,17 @@
-import { getProviderId } from "@better-auth-ui/core"
-import { useAuth, useListAccounts } from "@better-auth-ui/react"
-import { Fragment } from "react"
-import { Card, CardContent } from "#/components/ui/card.tsx"
+import { getProviderId } from '@better-auth-ui/core'
+import { useAuth, useListAccounts } from '@better-auth-ui/react'
+import { Fragment } from 'react'
+import { Card, CardContent } from '#/components/ui/card.tsx'
 import {
   Item,
   ItemContent,
   ItemGroup,
   ItemMedia,
-  ItemSeparator
-} from "#/components/ui/item.tsx"
-import { Skeleton } from "#/components/ui/skeleton.tsx"
-import { cn } from "cn"
-import { LinkedAccount } from "./linked-account"
+  ItemSeparator,
+} from '#/components/ui/item.tsx'
+import { Skeleton } from '#/components/ui/skeleton.tsx'
+import { cn } from 'cn'
+import { LinkedAccount } from './linked-account'
 
 export type LinkedAccountsProps = {
   className?: string
@@ -32,13 +32,13 @@ export function LinkedAccounts({ className }: LinkedAccountsProps) {
     allowUnlinkingAllAccounts,
     localization,
     multipleAccountsPerProvider,
-    socialProviders
+    socialProviders,
   } = useAuth()
 
   const { data: accounts, isPending } = useListAccounts(authClient)
 
   const linkedAccounts = accounts?.filter(
-    (account) => account.providerId !== "credential"
+    (account) => account.providerId !== 'credential',
   )
   const canUnlink =
     allowUnlinkingAllAccounts === true || (accounts?.length ?? 0) > 1
@@ -48,7 +48,7 @@ export function LinkedAccounts({ className }: LinkedAccountsProps) {
   const availableProviders =
     multipleAccountsPerProvider === false
       ? socialProviders?.filter(
-          (provider) => !linkedProviderIds.has(getProviderId(provider))
+          (provider) => !linkedProviderIds.has(getProviderId(provider)),
         )
       : socialProviders
 
@@ -58,14 +58,14 @@ export function LinkedAccounts({ className }: LinkedAccountsProps) {
       account,
       provider:
         socialProviders?.find(
-          (provider) => getProviderId(provider) === account.providerId
-        ) ?? account.providerId
+          (provider) => getProviderId(provider) === account.providerId,
+        ) ?? account.providerId,
     })) ?? []),
     ...(availableProviders?.map((provider) => ({
       key: getProviderId(provider),
       account: undefined,
-      provider
-    })) ?? [])
+      provider,
+    })) ?? []),
   ]
 
   return (
@@ -74,7 +74,7 @@ export function LinkedAccounts({ className }: LinkedAccountsProps) {
         {localization.settings.linkedAccounts}
       </h2>
 
-      <Card className={cn("p-0", className)}>
+      <Card className={cn('p-0', className)}>
         <CardContent className="p-0">
           <ItemGroup className="gap-0">
             {isPending

@@ -1,21 +1,22 @@
-"use client"
+'use client'
 
-import { fileToAvatarDataUrl } from "@better-auth-ui/core"
-import { useAuth, useSession, useUpdateUser } from "@better-auth-ui/react"
-import { Trash2, Upload } from "lucide-react"
-import { type ChangeEvent, useRef, useState } from "react"
-import { toast } from "sonner"
-import { UserAvatar } from "#/components/auth/user/user-avatar.tsx"
-import { Button, buttonVariants } from "#/components/ui/button.tsx"
+import { fileToAvatarDataUrl } from '@better-auth-ui/core'
+import { useAuth, useSession, useUpdateUser } from '@better-auth-ui/react'
+import { Trash2, Upload } from 'lucide-react'
+import {  useRef, useState } from 'react'
+import type {ChangeEvent} from 'react';
+import { toast } from 'sonner'
+import { UserAvatar } from '#/components/auth/user/user-avatar.tsx'
+import { Button, buttonVariants } from '#/components/ui/button.tsx'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from "#/components/ui/dropdown-menu.tsx"
-import { Field, FieldLabel } from "#/components/ui/field.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
-import { cn } from "cn"
+  DropdownMenuTrigger,
+} from '#/components/ui/dropdown-menu.tsx'
+import { Field, FieldLabel } from '#/components/ui/field.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
+import { cn } from 'cn'
 
 export type ChangeAvatarProps = {
   className?: string
@@ -38,7 +39,7 @@ export function ChangeAvatar({ className }: ChangeAvatarProps) {
     const file = e.target.files?.[0]
     if (!file) return
 
-    e.target.value = ""
+    e.target.value = ''
 
     setIsUploading(true)
 
@@ -53,11 +54,11 @@ export function ChangeAvatar({ className }: ChangeAvatarProps) {
         { image },
         {
           onSuccess: () =>
-            toast.success(localization.settings.avatarChangedSuccess)
-        }
+            toast.success(localization.settings.avatarChangedSuccess),
+        },
       )
     } catch (error) {
-      console.error("[Better Auth UI] Image operation failed", error)
+      console.error('[Better Auth UI] Image operation failed', error)
       toast.error(localization.errors.imageUploadFailed)
     }
 
@@ -81,8 +82,8 @@ export function ChangeAvatar({ className }: ChangeAvatarProps) {
           }
 
           toast.success(localization.settings.avatarDeletedSuccess)
-        }
-      }
+        },
+      },
     )
   }
 
@@ -111,7 +112,7 @@ export function ChangeAvatar({ className }: ChangeAvatarProps) {
 
         <DropdownMenu>
           <DropdownMenuTrigger
-            className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
+            className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
             disabled={!session || isPending}
           >
             {isPending && <Spinner />}

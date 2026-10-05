@@ -1,11 +1,11 @@
 import {
   useAuth,
   useRevokeOtherSessions,
-  useRevokeSessions
-} from "@better-auth-ui/react"
-import { LogOut } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
+  useRevokeSessions,
+} from '@better-auth-ui/react'
+import { LogOut } from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 import {
   AlertDialog,
@@ -15,12 +15,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogMedia,
-  AlertDialogTitle
-} from "#/components/ui/alert-dialog.tsx"
-import { Button } from "#/components/ui/button.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
+  AlertDialogTitle,
+} from '#/components/ui/alert-dialog.tsx'
+import { Button } from '#/components/ui/button.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
 
-type PendingAction = "other" | "all"
+type PendingAction = 'other' | 'all'
 
 export function SessionActions(props: { hasOtherSessions: boolean }) {
   const { authClient, basePaths, localization, navigate, viewPaths } = useAuth()
@@ -30,25 +30,25 @@ export function SessionActions(props: { hasOtherSessions: boolean }) {
     onSuccess: () => {
       toast.success(localization.settings.signOutOtherDevicesSuccess)
       setAction(null)
-    }
+    },
   })
   const revokeSessions = useRevokeSessions(authClient, {
     onSuccess: () =>
       navigate({
         to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
-        replace: true
-      })
+        replace: true,
+      }),
   })
 
   const isPending = revokeOtherSessions.isPending || revokeSessions.isPending
-  const isEverywhere = action === "all"
+  const isEverywhere = action === 'all'
 
   return (
     <>
       <div className="flex flex-wrap justify-end gap-2 border-t p-4">
         <Button
           disabled={!props.hasOtherSessions || isPending}
-          onClick={() => setAction("other")}
+          onClick={() => setAction('other')}
           size="sm"
           type="button"
           variant="outline"
@@ -57,7 +57,7 @@ export function SessionActions(props: { hasOtherSessions: boolean }) {
         </Button>
         <Button
           disabled={isPending}
-          onClick={() => setAction("all")}
+          onClick={() => setAction('all')}
           size="sm"
           type="button"
           variant="destructive"
@@ -98,7 +98,7 @@ export function SessionActions(props: { hasOtherSessions: boolean }) {
                   : revokeOtherSessions.mutate()
               }
               type="button"
-              variant={isEverywhere ? "destructive" : "default"}
+              variant={isEverywhere ? 'destructive' : 'default'}
             >
               {isPending && <Spinner />}
               {isEverywhere

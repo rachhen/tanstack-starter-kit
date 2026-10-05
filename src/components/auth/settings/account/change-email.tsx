@@ -1,14 +1,14 @@
-import { getViewURL, validateEmailAddress } from "@better-auth-ui/core"
-import { useAuth, useChangeEmail, useSession } from "@better-auth-ui/react"
-import { useEffect } from "react"
-import { toast } from "sonner"
+import { getViewURL, validateEmailAddress } from '@better-auth-ui/core'
+import { useAuth, useChangeEmail, useSession } from '@better-auth-ui/react'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
-import { Card, CardContent, CardFooter } from "#/components/ui/card.tsx"
-import { Field, FieldLabel } from "#/components/ui/field.tsx"
-import { Input } from "#/components/ui/input.tsx"
-import { Skeleton } from "#/components/ui/skeleton.tsx"
-import { cn } from "cn"
-import { isAuthFormFieldInvalid, useAuthForm } from "../../auth-form"
+import { Card, CardContent, CardFooter } from '#/components/ui/card.tsx'
+import { Field, FieldLabel } from '#/components/ui/field.tsx'
+import { Input } from '#/components/ui/input.tsx'
+import { Skeleton } from '#/components/ui/skeleton.tsx'
+import { cn } from 'cn'
+import { isAuthFormFieldInvalid, useAuthForm } from '../../auth-form'
 
 export type ChangeEmailProps = {
   className?: string
@@ -28,20 +28,20 @@ export function ChangeEmail({ className }: ChangeEmailProps) {
   const { data: session } = useSession(authClient)
 
   const { mutateAsync: changeEmail, isPending } = useChangeEmail(authClient, {
-    onSuccess: () => toast.success(localization.settings.changeEmailSuccess)
+    onSuccess: () => toast.success(localization.settings.changeEmailSuccess),
   })
 
   const form = useAuthForm({
-    defaultValues: { email: "" },
+    defaultValues: { email: '' },
     onSubmit: async ({ value }) =>
       await changeEmail({
         callbackURL: getViewURL(
           baseURL,
           basePaths.settings,
-          viewPaths.settings.account
+          viewPaths.settings.account,
         ),
-        newEmail: value.email
-      })
+        newEmail: value.email,
+      }),
   })
 
   useEffect(() => {
@@ -64,8 +64,8 @@ export function ChangeEmail({ className }: ChangeEmailProps) {
                   onChange: ({ value }) =>
                     validateEmailAddress(value, {
                       invalidMessage: localization.auth.invalidEmail,
-                      requiredMessage: localization.auth.fieldRequired
-                    })
+                      requiredMessage: localization.auth.fieldRequired,
+                    }),
                 }}
               >
                 {(field) => {

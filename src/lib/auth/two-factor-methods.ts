@@ -1,9 +1,9 @@
-export type TwoFactorMethod = "totp" | "otp"
+export type TwoFactorMethod = 'totp' | 'otp'
 
-const TWO_FACTOR_METHODS: TwoFactorMethod[] = ["totp", "otp"]
+const TWO_FACTOR_METHODS: TwoFactorMethod[] = ['totp', 'otp']
 
 /** Auth plugin id used by Better Auth UI's two-factor integration. */
-export const TWO_FACTOR_PLUGIN_ID = "twoFactor"
+export const TWO_FACTOR_PLUGIN_ID = 'twoFactor'
 
 /**
  * `sessionStorage` key holding the methods reported by the sign-in response.
@@ -12,7 +12,7 @@ export const TWO_FACTOR_PLUGIN_ID = "twoFactor"
  * two-factor cookie, which stays HTTP-only.
  */
 export const TWO_FACTOR_METHODS_STORAGE_KEY =
-  "better-auth-ui.two-factor-methods"
+  'better-auth-ui.two-factor-methods'
 
 type TwoFactorRedirect = {
   twoFactorRedirect: true
@@ -22,7 +22,7 @@ type TwoFactorRedirect = {
 /** Detect the redirect payload Better Auth returns before a second factor. */
 export function isTwoFactorRedirect(data: unknown): data is TwoFactorRedirect {
   return (
-    typeof data === "object" &&
+    typeof data === 'object' &&
     data !== null &&
     (data as { twoFactorRedirect?: unknown }).twoFactorRedirect === true
   )
@@ -37,12 +37,12 @@ export function parseTwoFactorMethods(methods?: unknown): TwoFactorMethod[] {
 
 /** Persist the enabled method names without blocking sign-in on storage errors. */
 export function storeTwoFactorMethods(methods?: unknown) {
-  if (typeof sessionStorage === "undefined") return
+  if (typeof sessionStorage === 'undefined') return
 
   try {
     sessionStorage.setItem(
       TWO_FACTOR_METHODS_STORAGE_KEY,
-      JSON.stringify(parseTwoFactorMethods(methods))
+      JSON.stringify(parseTwoFactorMethods(methods)),
     )
   } catch {
     // The challenge falls back to every method when storage is unavailable.
@@ -51,7 +51,7 @@ export function storeTwoFactorMethods(methods?: unknown) {
 
 /** Read the stored methods, falling back to every supported challenge. */
 export function readTwoFactorMethods(): TwoFactorMethod[] {
-  if (typeof sessionStorage === "undefined") return TWO_FACTOR_METHODS
+  if (typeof sessionStorage === 'undefined') return TWO_FACTOR_METHODS
 
   try {
     const stored = sessionStorage.getItem(TWO_FACTOR_METHODS_STORAGE_KEY)
@@ -66,7 +66,7 @@ export function readTwoFactorMethods(): TwoFactorMethod[] {
 
 /** Clear stored method hints after the challenge finishes or is abandoned. */
 export function clearTwoFactorMethods() {
-  if (typeof sessionStorage === "undefined") return
+  if (typeof sessionStorage === 'undefined') return
 
   try {
     sessionStorage.removeItem(TWO_FACTOR_METHODS_STORAGE_KEY)
