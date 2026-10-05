@@ -8,6 +8,7 @@ import { lastLoginMethodPlugin } from '#/lib/auth/last-login-method-plugin'
 import { organizationPlugin } from '#/lib/auth/organization-plugin'
 import { themePlugin } from '#/lib/auth/theme-plugin'
 
+import { organizationPermissions } from '#/lib/organization-access'
 import { AuthProvider } from './auth/auth-provider'
 import { Toaster } from './ui/sonner'
 import { TooltipProvider } from './ui/tooltip'
@@ -29,6 +30,10 @@ export function Providers({ children }: { children: ReactNode }) {
           lastLoginMethodPlugin(),
           organizationPlugin({
             allowMultipleRoles: false,
+            dynamicAccessControl: {
+              enabled: true,
+              permissions: organizationPermissions,
+            },
           }),
         ]}
         Link={({ href, ...props }) => <Link to={href} {...props} />}

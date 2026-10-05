@@ -4,6 +4,7 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter' // you can use rel
 import { betterAuth } from 'better-auth'
 import { lastLoginMethod, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
+import { organizationAccess, organizationRoles } from './organization-access'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -24,5 +25,13 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
-  plugins: [lastLoginMethod(), organization(), tanstackStartCookies()],
+  plugins: [
+    lastLoginMethod(),
+    organization({
+      ac: organizationAccess,
+      roles: organizationRoles,
+      dynamicAccessControl: { enabled: true },
+    }),
+    tanstackStartCookies(),
+  ],
 })

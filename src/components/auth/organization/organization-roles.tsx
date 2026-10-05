@@ -1,25 +1,25 @@
-"use client"
+'use client'
 
+import type { AdditionalFields } from '@better-auth-ui/core'
 import {
-  type AdditionalFields,
   fieldsWithModelValues,
   getAdditionalFieldDefaultValues,
   getAdditionalFieldSubmitValues,
-  validateStringLength
-} from "@better-auth-ui/core"
-import type { OrganizationRolesAuthClient } from "@better-auth-ui/core/plugins/organization"
-import { useAuth, useAuthPlugin } from "@better-auth-ui/react"
+  validateStringLength,
+} from '@better-auth-ui/core'
+import type { OrganizationRolesAuthClient } from '@better-auth-ui/core/plugins/organization'
+import { useAuth, useAuthPlugin } from '@better-auth-ui/react'
 import {
   useCreateRole,
   useDeleteRole,
   useHasPermission,
   useListOrganizationMembers,
   useListRoles,
-  useUpdateRole
-} from "@better-auth-ui/react/plugins/organization"
-import { Filter, Pencil, Plus, Search, Trash2, X } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
-import { toast } from "sonner"
+  useUpdateRole,
+} from '@better-auth-ui/react/plugins/organization'
+import { Filter, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 import {
   AlertDialog,
@@ -30,65 +30,65 @@ import {
   AlertDialogHeader,
   AlertDialogMedia,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from "#/components/ui/alert-dialog.tsx"
-import { Badge } from "#/components/ui/badge.tsx"
-import { Button, buttonVariants } from "#/components/ui/button.tsx"
-import { Card, CardContent } from "#/components/ui/card.tsx"
-import { Checkbox } from "#/components/ui/checkbox.tsx"
+  AlertDialogTrigger,
+} from '#/components/ui/alert-dialog.tsx'
+import { Badge } from '#/components/ui/badge.tsx'
+import { Button, buttonVariants } from '#/components/ui/button.tsx'
+import { Card, CardContent } from '#/components/ui/card.tsx'
+import { Checkbox } from '#/components/ui/checkbox.tsx'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from "#/components/ui/dialog.tsx"
+  DialogTitle,
+} from '#/components/ui/dialog.tsx'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuTrigger
-} from "#/components/ui/dropdown-menu.tsx"
-import { Field, FieldLabel } from "#/components/ui/field.tsx"
-import { Input } from "#/components/ui/input.tsx"
+  DropdownMenuTrigger,
+} from '#/components/ui/dropdown-menu.tsx'
+import { Field, FieldLabel } from '#/components/ui/field.tsx'
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupInput
-} from "#/components/ui/input-group.tsx"
-import { Spinner } from "#/components/ui/spinner.tsx"
+  InputGroupInput,
+} from '#/components/ui/input-group.tsx'
+import { Input } from '#/components/ui/input.tsx'
+import { Spinner } from '#/components/ui/spinner.tsx'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "#/components/ui/table.tsx"
-import { organizationPlugin } from "#/lib/auth/organization-plugin.tsx"
-import { cn } from "cn"
+  TableRow,
+} from '#/components/ui/table.tsx'
+import { organizationPlugin } from '#/lib/auth/organization-plugin.tsx'
+import { cn } from 'cn'
 import {
   getAuthAdditionalFieldValidators,
   isAuthFormFieldInvalid,
-  useAuthForm
-} from "../auth-form"
-import { OrganizationSortableTableHead } from "./organization-sortable-table-head"
+  useAuthForm,
+} from '../auth-form'
+import { OrganizationSortableTableHead } from './organization-sortable-table-head'
 import {
   createOrganizationColumnHelper,
   ORGANIZATION_TABLE_PAGE_SIZE,
-  useOrganizationTable
-} from "./organization-table"
-import { OrganizationTableBulkAction } from "./organization-table-bulk-action"
-import { OrganizationTablePagination } from "./organization-table-pagination"
+  useOrganizationTable,
+} from './organization-table'
+import { OrganizationTableBulkAction } from './organization-table-bulk-action'
+import { OrganizationTablePagination } from './organization-table-pagination'
+import type { OrganizationSelectableRow } from './organization-table-selection'
 import {
-  type OrganizationSelectableRow,
   OrganizationTableSelectAll,
-  OrganizationTableSelectRow
-} from "./organization-table-selection"
-import { useOrganizationTableState } from "./organization-table-state"
-import { OrganizationTableViewOptions } from "./organization-table-view-options"
+  OrganizationTableSelectRow,
+} from './organization-table-selection'
+import { useOrganizationTableState } from './organization-table-state'
+import { OrganizationTableViewOptions } from './organization-table-view-options'
 
 type Role = {
   id: string
@@ -99,32 +99,32 @@ type Role = {
 
 const roleColumnHelper = createOrganizationColumnHelper<Role>()
 const roleColumns = roleColumnHelper.columns([
-  roleColumnHelper.accessor("role", {
+  roleColumnHelper.accessor('role', {
     enableHiding: false,
-    filterFn: "includesString"
+    filterFn: 'includesString',
   }),
   roleColumnHelper.accessor(
     (role) =>
       Object.values(role.permission).reduce(
         (total, actions) => total + actions.length,
-        0
+        0,
       ),
-    { id: "permissions", enableGlobalFilter: false }
+    { id: 'permissions', enableGlobalFilter: false },
   ),
   roleColumnHelper.accessor((role) => Object.keys(role.permission), {
-    id: "permissionResources",
+    id: 'permissionResources',
     enableGlobalFilter: false,
     enableHiding: false,
     enableSorting: false,
     filterFn: (row, columnId, value) =>
-      row.getValue<string[]>(columnId).includes(String(value))
-  })
+      row.getValue<string[]>(columnId).includes(String(value)),
+  }),
 ])
-const ROLE_COLUMN_IDS = ["role", "permissions", "permissionResources"] as const
+const ROLE_COLUMN_IDS = ['role', 'permissions', 'permissionResources'] as const
 const EMPTY_ROLES: Role[] = []
 
 export function OrganizationRoles({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }) {
@@ -134,36 +134,36 @@ export function OrganizationRoles({
     useAuthPlugin(organizationPlugin)
   const canRead = useHasPermission(authClient, {
     organizationId,
-    permissions: { ac: ["read"] }
+    permissions: { ac: ['read'] },
   })
   const roles = useListRoles(authClient, {
     query: { organizationId },
-    enabled: !!organizationId && canRead.data?.success === true
+    enabled: !!organizationId && canRead.data?.success === true,
   })
   const canCreate = useHasPermission(authClient, {
     organizationId,
-    permissions: { ac: ["create"] }
+    permissions: { ac: ['create'] },
   })
   const canUpdate = useHasPermission(authClient, {
     organizationId,
-    permissions: { ac: ["update"] }
+    permissions: { ac: ['update'] },
   })
   const canDelete = useHasPermission(authClient, {
     organizationId,
-    permissions: { ac: ["delete"] }
+    permissions: { ac: ['delete'] },
   })
   const [editingRole, setEditingRole] = useState<Role | null>()
   const tableState = useOrganizationTableState(
-    "organizationRoles",
+    'organizationRoles',
     ORGANIZATION_TABLE_PAGE_SIZE,
-    ROLE_COLUMN_IDS
+    ROLE_COLUMN_IDS,
   )
   const { globalFilter, pagination } = tableState
   useEffect(() => {
     tableState.setColumnVisibility((current) =>
       current.permissionResources === false
         ? current
-        : { ...current, permissionResources: false }
+        : { ...current, permissionResources: false },
     )
   }, [tableState.setColumnVisibility])
   const table = useOrganizationTable(
@@ -179,27 +179,27 @@ export function OrganizationRoles({
           Object.entries(row.original.permission).some(
             ([resource, actions]) =>
               resource.toLowerCase().includes(query) ||
-              actions.some((action) => action.toLowerCase().includes(query))
+              actions.some((action) => action.toLowerCase().includes(query)),
           )
         )
       },
-      getRowId: (role) => role.id
+      getRowId: (role) => role.id,
     },
-    () => null
+    () => null,
   )
   const deleteRoles = useDeleteRole(authClient, organizationId)
   const permissionFilter = String(
-    table.getColumn("permissionResources")?.getFilterValue() ?? "all"
+    table.getColumn('permissionResources')?.getFilterValue() ?? 'all',
   )
   const permissionFacetRows = table
-    .getColumn("permissionResources")
+    .getColumn('permissionResources')
     ?.getFacetedRowModel().flatRows
   const permissionResources = Array.from(
     new Set(
       (roles.data ?? EMPTY_ROLES).flatMap((role) =>
-        Object.keys(role.permission)
-      )
-    )
+        Object.keys(role.permission),
+      ),
+    ),
   ).sort()
   const selectedRoles = table.getSelectedRowModel().rows
   const showSelection = canDelete.data?.success === true
@@ -207,16 +207,16 @@ export function OrganizationRoles({
   async function deleteSelectedRoles() {
     const results = await Promise.allSettled(
       selectedRoles.map((row) =>
-        deleteRoles.mutateAsync({ roleId: row.original.id, organizationId })
-      )
+        deleteRoles.mutateAsync({ roleId: row.original.id, organizationId }),
+      ),
     )
     const deletedCount = results.filter(
-      (result) => result.status === "fulfilled"
+      (result) => result.status === 'fulfilled',
     ).length
 
     if (deletedCount > 0) {
       toast.success(
-        localization.rolesDeleted.replace("{{count}}", String(deletedCount))
+        localization.rolesDeleted.replace('{{count}}', String(deletedCount)),
       )
     }
     table.resetRowSelection(true)
@@ -259,7 +259,7 @@ export function OrganizationRoles({
 
         <DropdownMenu>
           <DropdownMenuTrigger
-            className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+            className={cn(buttonVariants({ size: 'sm', variant: 'outline' }))}
             disabled={roles.isLoading}
           >
             <Filter />
@@ -269,8 +269,8 @@ export function OrganizationRoles({
             <DropdownMenuRadioGroup
               onValueChange={(value) =>
                 table
-                  .getColumn("permissionResources")
-                  ?.setFilterValue(value === "all" ? undefined : value)
+                  .getColumn('permissionResources')
+                  ?.setFilterValue(value === 'all' ? undefined : value)
               }
               value={permissionFilter}
             >
@@ -280,10 +280,10 @@ export function OrganizationRoles({
               {permissionResources.map((resource) => (
                 <DropdownMenuRadioItem key={resource} value={resource}>
                   {dynamicAccessControl?.permissions[resource]?.label ??
-                    resource}{" "}
+                    resource}{' '}
                   (
                   {permissionFacetRows?.filter((row) =>
-                    Object.hasOwn(row.original.permission, resource)
+                    Object.hasOwn(row.original.permission, resource),
                   ).length ?? 0}
                   )
                 </DropdownMenuRadioItem>
@@ -296,12 +296,12 @@ export function OrganizationRoles({
           <OrganizationTableViewOptions
             columns={[
               {
-                id: "permissions",
+                id: 'permissions',
                 label: localization.permissions,
-                visible: table.getColumn("permissions")?.getIsVisible() ?? true,
+                visible: table.getColumn('permissions')?.getIsVisible() ?? true,
                 onVisibleChange: (visible) =>
-                  table.getColumn("permissions")?.toggleVisibility(visible)
-              }
+                  table.getColumn('permissions')?.toggleVisibility(visible),
+              },
             ]}
             disabled={roles.isLoading}
             localization={localization}
@@ -309,7 +309,7 @@ export function OrganizationRoles({
         </div>
       </div>
 
-      {permissionFilter !== "all" && (
+      {permissionFilter !== 'all' && (
         <Badge className="w-fit gap-1" variant="secondary">
           {dynamicAccessControl?.permissions[permissionFilter]?.label ??
             permissionFilter}
@@ -317,7 +317,7 @@ export function OrganizationRoles({
             aria-label={localization.clear}
             className="size-4 rounded-sm text-muted-foreground"
             onClick={() =>
-              table.getColumn("permissionResources")?.setFilterValue(undefined)
+              table.getColumn('permissionResources')?.setFilterValue(undefined)
             }
             size="icon-xs"
             type="button"
@@ -362,13 +362,13 @@ export function OrganizationRoles({
                     </TableHead>
                   )}
                   <OrganizationSortableTableHead
-                    column={table.getColumn("role")}
+                    column={table.getColumn('role')}
                   >
                     {localization.roleName}
                   </OrganizationSortableTableHead>
-                  {table.getColumn("permissions")?.getIsVisible() && (
+                  {table.getColumn('permissions')?.getIsVisible() && (
                     <OrganizationSortableTableHead
-                      column={table.getColumn("permissions")}
+                      column={table.getColumn('permissions')}
                     >
                       {localization.permissions}
                     </OrganizationSortableTableHead>
@@ -392,7 +392,7 @@ export function OrganizationRoles({
                     role={row.original}
                     selectableRow={showSelection ? row : undefined}
                     showPermissions={
-                      table.getColumn("permissions")?.getIsVisible() === true
+                      table.getColumn('permissions')?.getIsVisible() === true
                     }
                   />
                 ))}
@@ -450,7 +450,7 @@ function OrganizationRoleRow({
   organizationId,
   role,
   selectableRow,
-  showPermissions
+  showPermissions,
 }: {
   authClient: OrganizationRolesAuthClient
   canDelete: boolean
@@ -470,17 +470,17 @@ function OrganizationRoleRow({
     onSuccess: () => {
       setDeleteOpen(false)
       toast.success(localization.roleDeleted)
-    }
+    },
   })
   const assignments = useListOrganizationMembers(authClient, {
     query: {
       organizationId,
-      filterField: "role",
-      filterOperator: "contains",
+      filterField: 'role',
+      filterOperator: 'contains',
       filterValue: role.role,
-      limit: 1
+      limit: 1,
     },
-    enabled: Boolean(organizationId && canDelete)
+    enabled: Boolean(organizationId && canDelete),
   })
   const assignedCount =
     assignments.data?.total ?? assignments.data?.members.length ?? 0
@@ -490,7 +490,7 @@ function OrganizationRoleRow({
 
   return (
     <TableRow
-      data-state={selectableRow?.getIsSelected() ? "selected" : undefined}
+      data-state={selectableRow?.getIsSelected() ? 'selected' : undefined}
     >
       {selectableRow && (
         <TableCell>
@@ -505,7 +505,7 @@ function OrganizationRoleRow({
         <TableCell>
           {Object.values(role.permission).reduce(
             (total, actions) => total + actions.length,
-            0
+            0,
           )}
         </TableCell>
       )}
@@ -540,16 +540,16 @@ function OrganizationRoleRow({
             >
               <AlertDialogTrigger
                 className={buttonVariants({
-                  size: "icon",
-                  variant: "ghost",
-                  className: "text-destructive"
+                  size: 'icon',
+                  variant: 'ghost',
+                  className: 'text-destructive',
                 })}
                 disabled={deleteDisabled}
                 title={
                   assignedCount > 0
                     ? localization.roleInUse.replace(
-                        "{{count}}",
-                        String(assignedCount)
+                        '{{count}}',
+                        String(assignedCount),
                       )
                     : localization.deleteRole
                 }
@@ -609,7 +609,7 @@ function RoleDialog({
   organizationId,
   registry,
   role,
-  roleFields
+  roleFields,
 }: {
   onOpenChange: (open: boolean) => void
   open: boolean
@@ -625,24 +625,24 @@ function RoleDialog({
     onSuccess: () => {
       toast.success(localization.roleCreated)
       onOpenChange(false)
-    }
+    },
   })
   const updateRole = useUpdateRole(authClient, organizationId, {
     onSuccess: () => {
       toast.success(localization.roleUpdated)
       onOpenChange(false)
-    }
+    },
   })
 
   const configuredRoleFields = useMemo(
     () => fieldsWithModelValues(roleFields, role ?? {}),
-    [role, roleFields]
+    [role, roleFields],
   )
   const form = useAuthForm({
     defaultValues: {
       additionalFields: getAdditionalFieldDefaultValues(configuredRoleFields),
-      name: role?.role ?? "",
-      permission: role?.permission ?? ({} as Record<string, string[]>)
+      name: role?.role ?? '',
+      permission: role?.permission ?? {},
     },
     onSubmit: async ({ value }) => {
       const roleName = value.name.trim()
@@ -654,9 +654,7 @@ function RoleDialog({
         ) {
           const access = await authClient.organization.hasPermission({
             organizationId,
-            permissions: value.permission as Parameters<
-              OrganizationRolesAuthClient["organization"]["hasPermission"]
-            >[0]["permissions"]
+            permissions: value.permission,
           })
 
           if (access.error || !access.data?.success) {
@@ -667,38 +665,39 @@ function RoleDialog({
 
         const additionalFields = getAdditionalFieldSubmitValues(
           configuredRoleFields,
-          value.additionalFields
+          value.additionalFields,
         )
         if (role) {
+          const nameChanged = roleName.toLowerCase() !== role.role.toLowerCase()
           await updateRole.mutateAsync({
             organizationId,
             roleId: role.id,
             data: {
               ...additionalFields,
-              roleName,
-              permission: value.permission
-            }
+              ...(nameChanged ? { roleName } : {}),
+              permission: value.permission,
+            },
           })
         } else {
           await createRole.mutateAsync({
             organizationId,
             role: roleName,
             permission: value.permission,
-            additionalFields
+            additionalFields,
           })
         }
       } catch {
         // The mutation reports the error through its configured handler.
       }
-    }
+    },
   })
 
   useEffect(() => {
     if (!open) return
     form.reset({
       additionalFields: getAdditionalFieldDefaultValues(configuredRoleFields),
-      name: role?.role ?? "",
-      permission: role?.permission ?? {}
+      name: role?.role ?? '',
+      permission: role?.permission ?? {},
     })
   }, [configuredRoleFields, form, open, role?.permission, role?.role])
 
@@ -724,8 +723,8 @@ function RoleDialog({
                 onChange: ({ value }) =>
                   validateStringLength(value, {
                     requiredMessage: authLocalization.auth.fieldRequired,
-                    trim: true
-                  })
+                    trim: true,
+                  }),
               }}
             >
               {(field) => {
@@ -759,7 +758,7 @@ function RoleDialog({
                 name={`additionalFields.${configuredField.name}`}
                 validators={getAuthAdditionalFieldValidators(
                   configuredField,
-                  authLocalization.auth.fieldRequired
+                  authLocalization.auth.fieldRequired,
                 )}
               >
                 {(field) => (
@@ -800,18 +799,18 @@ function RoleDialog({
                                   [resource]: selected
                                     ? [
                                         ...(field.state.value[resource] ?? []),
-                                        action
+                                        action,
                                       ]
                                     : (
                                         field.state.value[resource] ?? []
-                                      ).filter((entry) => entry !== action)
+                                      ).filter((entry) => entry !== action),
                                 })
                               }
                               organizationId={organizationId}
                               pending={pending}
                               resource={resource}
                             />
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -847,7 +846,7 @@ function RolePermissionCheckbox({
   onCheckedChange,
   organizationId,
   pending,
-  resource
+  resource,
 }: {
   action: string
   checked: boolean
@@ -860,9 +859,7 @@ function RolePermissionCheckbox({
   const { authClient } = useAuth<OrganizationRolesAuthClient>()
   const canAssign = useHasPermission(authClient, {
     organizationId,
-    permissions: { [resource]: [action] } as Parameters<
-      OrganizationRolesAuthClient["organization"]["hasPermission"]
-    >[0]["permissions"]
+    permissions: { [resource]: [action] },
   })
   const id = `role-permission-${resource}-${action}`
   const disabled =
