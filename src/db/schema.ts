@@ -6,6 +6,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core'
 import { organizations, users } from './auth-schema'
@@ -19,7 +20,9 @@ export const owners = pgTable(
   {
     id: uuid().defaultRandom().primaryKey(),
     type: text().$type<OwnerType>().notNull().default('user'),
-    userId: text('user_id').references(() => users.id),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
     organizationId: text('organization_id').references(() => organizations.id),
     createdAt: timestamp('created_at', { withTimezone: true })
       .defaultNow()
@@ -29,17 +32,23 @@ export const owners = pgTable(
       .notNull(),
   },
   (table) => [
-    index('owners_user_id_idx').on(table.userId),
+    uniqueIndex('owners_user_personal_uidx')
+      .on(table.userId)
+      .where(sql`${table.organizationId} IS NULL`),
+
+    uniqueIndex('owners_user_organization_uidx')
+      .on(table.userId, table.organizationId)
+      .where(sql`${table.organizationId} IS NOT NULL`),
+
     index('owners_organization_id_idx').on(table.organizationId),
+
     check(
       'owners_type_check',
       sql`(
         (${table.type} = 'user'
-          AND ${table.userId} IS NOT NULL
           AND ${table.organizationId} IS NULL)
         OR
         (${table.type} = 'organization'
-          AND ${table.userId} IS NULL
           AND ${table.organizationId} IS NOT NULL)
       )`,
     ),

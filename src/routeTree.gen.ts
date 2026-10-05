@@ -15,6 +15,7 @@ import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
 import { Route as AppOrganizationPathRouteImport } from './routes/_app/organization/$path'
 import { Route as AppSettingsPathRouteImport } from './routes/_app/settings/$path'
+import { Route as AppTodosIndexRouteImport } from './routes/_app/todos/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -46,6 +47,11 @@ const AppSettingsPathRoute = AppSettingsPathRouteImport.update({
   path: '/settings/$path',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppTodosIndexRoute = AppTodosIndexRouteImport.update({
+  id: '/todos/',
+  path: '/todos/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/organization/$path': typeof AppOrganizationPathRoute
   '/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/todos/': typeof AppTodosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/organization/$path': typeof AppOrganizationPathRoute
   '/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/todos': typeof AppTodosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/_app/organization/$path': typeof AppOrganizationPathRoute
   '/_app/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_app/todos/': typeof AppTodosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/organization/$path'
     | '/settings/$path'
     | '/api/auth/$'
+    | '/todos/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/organization/$path'
     | '/settings/$path'
     | '/api/auth/$'
+    | '/todos'
   id:
     | '__root__'
     | '/'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/_app/organization/$path'
     | '/_app/settings/$path'
     | '/api/auth/$'
+    | '/_app/todos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,6 +169,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsPathRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/todos/': {
+      id: '/_app/todos/'
+      path: '/todos'
+      fullPath: '/todos/'
+      preLoaderRoute: typeof AppTodosIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -171,12 +190,14 @@ interface AppRouteRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppOrganizationPathRoute: typeof AppOrganizationPathRoute
   AppSettingsPathRoute: typeof AppSettingsPathRoute
+  AppTodosIndexRoute: typeof AppTodosIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppOrganizationPathRoute: AppOrganizationPathRoute,
   AppSettingsPathRoute: AppSettingsPathRoute,
+  AppTodosIndexRoute: AppTodosIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

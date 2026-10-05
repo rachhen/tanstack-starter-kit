@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import {
   BookOpenIcon,
-  BotIcon,
   LayoutDashboardIcon,
+  ListTodo,
   Settings2Icon,
 } from 'lucide-react'
 import type { ComponentProps } from 'react'
@@ -30,9 +30,9 @@ const items = [
     icon: <LayoutDashboardIcon />,
   },
   {
-    title: 'Models',
-    url: '#',
-    icon: <BotIcon />,
+    title: 'Todos',
+    url: '/todos',
+    icon: <ListTodo />,
   },
   {
     title: 'Documentation',
