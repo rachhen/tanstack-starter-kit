@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
+import { Route as AppOrganizationPathRouteImport } from './routes/_app/organization/$path'
 import { Route as AppSettingsPathRouteImport } from './routes/_app/settings/$path'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -35,6 +36,11 @@ const AuthPathRoute = AuthPathRouteImport.update({
   path: '/auth/$path',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppOrganizationPathRoute = AppOrganizationPathRouteImport.update({
+  id: '/organization/$path',
+  path: '/organization/$path',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppSettingsPathRoute = AppSettingsPathRouteImport.update({
   id: '/settings/$path',
   path: '/settings/$path',
@@ -50,6 +56,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/$path': typeof AuthPathRoute
+  '/organization/$path': typeof AppOrganizationPathRoute
   '/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -57,6 +64,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/$path': typeof AuthPathRoute
+  '/organization/$path': typeof AppOrganizationPathRoute
   '/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -66,21 +74,34 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
   '/auth/$path': typeof AuthPathRoute
+  '/_app/organization/$path': typeof AppOrganizationPathRoute
   '/_app/settings/$path': typeof AppSettingsPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/dashboard' | '/auth/$path' | '/settings/$path' | '/api/auth/$'
+    | '/'
+    | '/dashboard'
+    | '/auth/$path'
+    | '/organization/$path'
+    | '/settings/$path'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/auth/$path' | '/settings/$path' | '/api/auth/$'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/auth/$path'
+    | '/organization/$path'
+    | '/settings/$path'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/dashboard'
     | '/auth/$path'
+    | '/_app/organization/$path'
     | '/_app/settings/$path'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
@@ -122,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPathRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/organization/$path': {
+      id: '/_app/organization/$path'
+      path: '/organization/$path'
+      fullPath: '/organization/$path'
+      preLoaderRoute: typeof AppOrganizationPathRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/settings/$path': {
       id: '/_app/settings/$path'
       path: '/settings/$path'
@@ -141,11 +169,13 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppOrganizationPathRoute: typeof AppOrganizationPathRoute
   AppSettingsPathRoute: typeof AppSettingsPathRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppOrganizationPathRoute: AppOrganizationPathRoute,
   AppSettingsPathRoute: AppSettingsPathRoute,
 }
 

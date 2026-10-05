@@ -2,10 +2,11 @@ import { viewPaths } from '@better-auth-ui/core'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 
 import { Settings } from '#/components/auth/settings/settings'
+import { organizationPlugin } from '#/lib/auth/organization-plugin'
 
 const validSettingsPaths = [
   ...Object.values(viewPaths.settings),
-  // ...Object.values(organizationPlugin().viewPaths.settings),
+  ...Object.values(organizationPlugin().viewPaths.settings),
 ]
 
 export const Route = createFileRoute('/_app/settings/$path')({

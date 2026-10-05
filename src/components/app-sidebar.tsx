@@ -5,6 +5,7 @@ import {
   LayoutDashboardIcon,
   Settings2Icon,
 } from 'lucide-react'
+import type { ComponentProps } from 'react'
 
 import {
   Sidebar,
@@ -19,7 +20,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '#/components/ui/sidebar.tsx'
-import type { ComponentProps } from 'react'
 import { UserButton } from './auth/user/user-button'
 import { Logo } from './logo'
 

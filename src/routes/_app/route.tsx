@@ -1,3 +1,4 @@
+import { AppHeader } from '#/components/app-header'
 import { AppSidebar } from '#/components/app-sidebar'
 import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar'
 import { auth } from '#/lib/auth'
@@ -37,6 +38,7 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
+        <AppHeader />
         <Outlet />
       </SidebarInset>
     </SidebarProvider>

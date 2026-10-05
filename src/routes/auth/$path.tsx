@@ -1,10 +1,11 @@
 import { Auth } from '#/components/auth/auth'
+import { organizationPlugin } from '#/lib/auth/organization-plugin'
 import { viewPaths } from '@better-auth-ui/core'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 const validAuthPathSegments = new Set([
   ...Object.values(viewPaths.auth),
-  // magicLinkPlugin().viewPaths.auth.magicLink,
+  ...Object.values(organizationPlugin().viewPaths.auth),
 ])
 
 export const Route = createFileRoute('/auth/$path')({

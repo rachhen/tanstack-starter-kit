@@ -2,7 +2,7 @@ import { db } from '#/db'
 import * as schema from '#/db/schema'
 import { drizzleAdapter } from '@better-auth/drizzle-adapter' // you can use relation-v2
 import { betterAuth } from 'better-auth'
-import { lastLoginMethod } from 'better-auth/plugins'
+import { lastLoginMethod, organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 
 export const auth = betterAuth({
@@ -24,5 +24,5 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
-  plugins: [lastLoginMethod(), tanstackStartCookies()],
+  plugins: [lastLoginMethod(), organization(), tanstackStartCookies()],
 })
