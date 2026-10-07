@@ -13,7 +13,13 @@ const config = defineConfig({
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      importProtection: {
+        client: {
+          files: ['**/db/**', '**/server/**', '**/lib/auth.ts'],
+        },
+      },
+    }),
     viteReact(),
   ],
 })

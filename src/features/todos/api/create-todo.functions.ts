@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { db, schema } from '#/db'
-import { ownerMiddleware } from '#/middleware/owner.server'
+import { ownerMiddleware } from '#/middleware/owner'
 
 import { TodoSchema } from '../validators/todo'
 

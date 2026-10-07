@@ -2,7 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 
 import type { DataGridFeatures } from '#/components/reui/data-grid/data-grid'
 import { DataGridColumnHeader } from '#/components/reui/data-grid/data-grid-column-header'
-import type { GetTodos } from '../server/get-todos.functions'
+import type { GetTodos } from '../api/get-todos.functions'
 
 // Use `accessor` for data columns and `display` for columns without one.
 const columnHelper = createColumnHelper<DataGridFeatures, GetTodos[number]>()

@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { db } from '#/db'
-import { ownerMiddleware } from '#/middleware/owner.server'
+import { ownerMiddleware } from '#/middleware/owner'
 
 export const getTodos = createServerFn()
   .middleware([ownerMiddleware])

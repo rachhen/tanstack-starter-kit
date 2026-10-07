@@ -1,19 +1,5 @@
-import { createMiddleware } from '@tanstack/react-start'
-import { and, eq, isNull } from 'drizzle-orm'
-
 import { db, schema } from '#/db'
-import { authMiddleware } from './auth'
-
-export const ownerMiddleware = createMiddleware()
-  .middleware([authMiddleware])
-  .server(async ({ next, context }) => {
-    const userId = context.session.userId
-    const organizationId = context.session.activeOrganizationId
-
-    const owner = await getOrCreateOwner(userId, organizationId)
-
-    return next({ context: { owner } })
-  })
+import { and, eq, isNull } from 'drizzle-orm'
 
 export async function getOrCreateOwner(
   userId: string,
@@ -30,8 +16,6 @@ export async function getOrCreateOwner(
           isNull(schema.owners.organizationId),
         ),
   })
-
-  console.log(existing)
 
   if (existing) {
     return existing
